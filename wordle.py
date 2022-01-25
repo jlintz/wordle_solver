@@ -98,6 +98,7 @@ class Wordle:
         @word: word we're checking
         Determine if a word is still possible based on found and not found chars
         """
+
         # eliminate any words with chars in our not_found_chars list
         if any(letter in word for letter in self.not_found_chars):
             return False
@@ -137,6 +138,8 @@ class Wordle:
         return: bool of sucess
         """
 
+        found_chars = set()
+        not_found_chars = set()
         # ensure score is valid before continuing
         if not self._validate_score(word_guess, word_score):
             return False
@@ -148,15 +151,26 @@ class Wordle:
 
             if score == "b":
                 try:
-                    self.not_found_chars.add(guess)
+                    not_found_chars.add(guess)
                 except ValueError:
                     # ignore cases of duplicate letters where first instance is marked as 'b', e.g. word_guess:'tests' word_score:'gbbbb'
                     pass
             elif score == "g":
                 self.current_score[a] = guess
-                self.found_chars.add(guess)
+                found_chars.add(guess)
             elif score == "y":
-                self.found_chars.add(guess)
+                found_chars.add(guess)
+
+        # handle cases where we have duplicate letters in a
+        # guess, and that letter is in the answer
+        intersection = found_chars & not_found_chars
+        if intersection:
+            for a in intersection:
+                not_found_chars.remove(a)
+
+        self.found_chars.update(found_chars)
+        self.not_found_chars.update(not_found_chars)
+
         print(f"Word so far: {self.current_score}")
 
         self._remove_invalid_words()

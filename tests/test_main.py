@@ -9,6 +9,7 @@ class TestWordle(unittest.TestCase):
             "tests",
             "tanks",
             "truth",
+            "knoll",
         ]
         self.wordle = Wordle(wordle_list)
         self.answer = "tests"
@@ -92,11 +93,19 @@ class TestWordle(unittest.TestCase):
 
         self.assertTrue(self.wordle.possible_word("rhast"))
 
+    def test_possible_word_double_letter_in_guess(self):
+        # test scenario of double letter in guess being a valid letter in answer
+        self.wordle.answer = "knoll"
+
+        self.assertTrue(self.wordle.update_score("boomy", "bbgbb"))
+        self.assertSequenceEqual(self.wordle.not_found_chars, {"m", "y", "b"})
+        self.assertSequenceEqual(self.wordle.found_chars, {"o"})
+
     def test_remove_invalid_words(self):
         self.wordle.found_chars = []
         self.wordle.not_found_chars = ["b", "e"]
         self.wordle._remove_invalid_words()
-        self.assertListEqual(["tanks", "truth"], self.wordle.word_list)
+        self.assertListEqual(["tanks", "truth", "knoll"], self.wordle.word_list)
 
 
 if __name__ == "__main__":
