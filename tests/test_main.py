@@ -98,8 +98,8 @@ class TestWordle(unittest.TestCase):
         self.wordle.answer = "knoll"
 
         self.assertTrue(self.wordle.update_score("boomy", "bbgbb"))
-        self.assertSequenceEqual(self.wordle.not_found_chars, {"m", "y", "b"})
-        self.assertSequenceEqual(self.wordle.found_chars, {"o"})
+        self.assertSetEqual(self.wordle.not_found_chars, {"m", "y", "b"})
+        self.assertSetEqual(self.wordle.found_chars, {"o"})
 
     def test_remove_invalid_words(self):
         self.wordle.found_chars = []
