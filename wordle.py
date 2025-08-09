@@ -135,7 +135,7 @@ class Wordle:
         Track letters that are found and their positions
         @word_guess: Last word guessed
         @word_score: Score given by Wordle in color coded format, [G]reen, [Y]ellow, [B]lack
-        return: bool of sucess
+        return: bool of success
         """
 
         found_chars = set()
